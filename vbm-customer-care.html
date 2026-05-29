@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viralbond Media Call Support – Premium Appointment Booking</title>
+    <meta name="description" content="Book expert support calls with Viralbond Media. Talk with professional agents anytime, 24/7. Smart appointment booking for business, creator, and tech support.">
+    <style>
+        :root {
+            --bg-deep: #06060d;
+            --bg-primary: #0a0a16;
+            --bg-secondary: #0f0f1f;
+            --bg-card: rgba(18, 18, 35, 0.6);
+            --bg-glass: rgba(255, 255, 255, 0.03);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(108, 92, 231, 0.3);
+            --text-primary: #f0f0f5;
+            --text-secondary: #b0b0c8;
+            --text-muted: #7a7a95;
+            --accent-1: #6c5ce7;
+            --accent-2: #a855f7;
+            --accent-3: #6366f1;
+            --accent-4: #8b5cf6;
+            --gradient-hero: linear-gradient(135deg, #0a0a16 0%, #12122a 30%, #0d0d24 60%, #0a0a18 100%);
+            --gradient-btn: linear-gradient(135deg, #6c5ce7 0%, #a855f7 50%, #6366f1 100%);
+            --gradient-btn-hover: linear-gradient(135deg, #7c6df7 0%, #b865ff 50%, #7376f7 100%);
+            --gradient-card: linear-gradient(145deg, rgba(108, 92, 231, 0.08) 0%, rgba(168, 85, 247, 0.04) 100%);
+            --glow-purple: 0 0 25px rgba(108, 92, 231, 0.4), 0 0 60px rgba(108, 92, 231, 0.15);
+            --glow-strong: 0 0 35px rgba(108, 92, 231, 0.55), 0 0 80px rgba(168, 85, 247, 0.2);
+            --shadow-card: 0 4px 30px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(255, 255, 255, 0.04);
+            --shadow-elevated: 0 8px 50px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(108, 92, 231, 0.08);
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --radius-full: 50%;
+            --font-main: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --max-width: 1200px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* LOADING SCREEN */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: var(--bg-deep);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-ring {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.08);
+            border-top-color: var(--accent-2);
+            border-right-color: var(--accent-1);
+            animation: loader-spin 0.7s linear infinite;
+        }
+        .loader-text {
+            margin-top: 18px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 0.06em;
+            animation: loader-pulse 1.4s ease-in-out infinite;
+        }
+        @keyframes loader-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes loader-pulse {
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* FLOATING PARTICLES */
+        #particles-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--accent-1);
+            opacity: 0.12;
+            animation: float-particle var(--dur) ease-in-out infinite;
+            animation-delay: var(--delay);
+            filter: blur(1px);
+        }
+        @keyframes float-particle {
+            0%,
+            100% {
+                transform: translateY(0) translateX(0) scale(1);
+            }
+            25% {
+                transform: translateY(-40px) translateX(25px) scale(1.3);
+            }
+            50% {
+                transform: translateY(-15px) translateX(-20px) scale(0.8);
+            }
+            75% {
+                transform: translateY(-50px) translateX(10px) scale(1.2);
+            }
+        }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 12px 20px;
+            transition: var(--transition-smooth);
+            background: transparent;
+        }
+        .navbar.scrolled {
+            background: rgba(10, 10, 22, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-glass);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            padding: 8px 20px;
+        }
+        .navbar-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: -0.02em;
+            z-index: 1001;
+        }
+        .nav-logo-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            background: var(--gradient-btn);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            box-shadow: var(--glow-purple);
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition-fast);
+            position: relative;
+            letter-spacing: 0.01em;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-primary);
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-btn);
+            border-radius: 4px;
+            transition: width var(--transition-smooth);
+        }
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        .nav-cta {
+            padding: 10px 20px;
+            background: var(--gradient-btn);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 18px rgba(108, 92, 231, 0.35);
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+            font-family: var(--font-main);
+        }
+        .nav-cta:hover {
+            box-shadow: var(--glow-strong);
+            transform: translateY(-2px);
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+            background: none;
+            border: none;
+            padding: 8px;
+        }
+        .hamburger span {
+            width: 26px;
+            height: 2.5px;
+            background: var(--text-primary);
+            border-radius: 4px;
+            transition: var(--transition-smooth);
+            display: block;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: rgba(6, 6, 13, 0.96);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 32px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-smooth);
+            pointer-events: none;
+        }
+        .mobile-menu.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+        }
+        .mobile-menu a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            transition: var(--transition-fast);
+        }
+        .mobile-menu a:hover {
+            color: var(--accent-2);
+        }
+        .mobile-menu .mobile-cta {
+            margin-top: 10px;
+            padding: 14px 32px;
+            background: var(--gradient-btn);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: var(--glow-purple);
+            font-family: var(--font-main);
+        }
+
+        /* SECTIONS GENERAL */
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 70px 20px;
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+        .section-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent-2);
+            background: rgba(168, 85, 247, 0.1);
+            padding: 6px 16px;
+            border-radius: 50px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            max-width: 500px;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 40%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 20px 60px;
+            position: relative;
+            z-index: 1;
+            background: var(--gradient-hero);
+            overflow: hidden;
+        }
+        .hero-bg-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.25;
+            pointer-events: none;
+            animation: orb-float 8s ease-in-out infinite;
+        }
+        .hero-bg-orb.orb-1 {
+            width: 350px;
+            height: 350px;
+            background: var(--accent-1);
+            top: -100px;
+            left: -80px;
+        }
+        .hero-bg-orb.orb-2 {
+            width: 280px;
+            height: 280px;
+            background: var(--accent-2);
+            bottom: -80px;
+            right: -70px;
+        }
+        .hero-bg-orb.orb-3 {
+            width: 200px;
+            height: 200px;
+            background: var(--accent-3);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.15;
+        }
+        @keyframes orb-float {
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+            33% {
+                transform: translate(30px, -40px) scale(1.15);
+            }
+            66% {
+                transform: translate(-20px, 25px) scale(0.9);
+            }
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 50px;
+            padding: 8px 18px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            animation: fadeInUp 0.7s ease forwards;
+        }
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: dot-pulse 2s ease-in-out infinite;
+        }
+        @keyframes dot-pulse {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+            }
+            50% {
+                box-shadow: 0 0 0 12px rgba(16, 185, 129, 0);
+            }
+        }
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            animation: fadeInUp 0.7s ease 0.1s forwards;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+        .hero .typing-wrapper {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            min-height: 30px;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.7s ease 0.2s forwards;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.1em;
+            background: var(--accent-2);
+            margin-left: 3px;
+            vertical-align: text-bottom;
+            animation: cursor-blink 0.8s step-end infinite;
+        }
+        @keyframes cursor-blink {
+            50% {
+                opacity: 0;
+            }
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeInUp 0.7s ease 0.3s forwards;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .btn {
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition-smooth);
+            letter-spacing: 0.02em;
+            font-family: var(--font-main);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+        .btn-primary {
+            background: var(--gradient-btn);
+            color: #fff;
+            box-shadow: 0 4px 22px rgba(108, 92, 231, 0.4);
+        }
+        .btn-primary:hover {
+            box-shadow: var(--glow-strong);
+            transform: translateY(-3px);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+        }
+        .btn-outline:hover {
+            border-color: rgba(255, 255, 255, 0.45);
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateY(-3px);
+        }
+        .hero-floating-badge {
+            position: absolute;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            z-index: 2;
+            animation: float-badge 6s ease-in-out infinite;
+            box-shadow: var(--shadow-card);
+            display: none;
+        }
+        @media (min-width: 768px) {
+            .hero-floating-badge {
+                display: block;
+            }
+            .hero-floating-badge.badge-left {
+                left: 5%;
+                top: 25%;
+            }
+            .hero-floating-badge.badge-right {
+                right: 5%;
+                bottom: 30%;
+            }
+        }
+        @keyframes float-badge {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-18px);
+            }
+        }
+
+        /* GLASS CARD BASE */
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: var(--shadow-card);
+            transition: var(--transition-smooth);
+            overflow: hidden;
+        }
+        .glass-card:hover {
+            border-color: var(--border-glow);
+            box-shadow: var(--shadow-elevated);
+            transform: translateY(-4px);
+        }
+
+        /* FEATURES SECTION */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+        @media (min-width: 600px) {
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 18px;
+            }
+        }
+        @media (min-width: 900px) {
+            .features-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+        }
+        .feature-card {
+            padding: 22px 16px;
+            text-align: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: var(--transition-smooth);
+            cursor: default;
+        }
+        .feature-card:hover {
+            border-color: var(--border-glow);
+            box-shadow: var(--shadow-elevated);
+            transform: translateY(-5px);
+        }
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-md);
+            background: var(--gradient-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            font-size: 1.5rem;
+            transition: var(--transition-smooth);
+        }
+        .feature-card:hover .feature-icon {
+            box-shadow: var(--glow-purple);
+            transform: scale(1.08);
+        }
+        .feature-card h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
+        }
+        .feature-card p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* HOW IT WORKS */
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+        }
+        @media (min-width: 768px) {
+            .steps-container {
+                flex-direction: row;
+                gap: 16px;
+            }
+        }
+        .step-card {
+            flex: 1;
+            padding: 24px 18px;
+            text-align: center;
+            position: relative;
+        }
+        .step-number {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--gradient-btn);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+            box-shadow: var(--glow-purple);
+        }
+        .step-card h4 {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+        .step-card p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        .step-connector {
+            display: none;
+            position: absolute;
+            top: 35px;
+            right: -30px;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-1), transparent);
+            opacity: 0.5;
+        }
+        @media (min-width: 768px) {
+            .step-connector {
+                display: block;
+            }
+            .step-card:last-child .step-connector {
+                display: none;
+            }
+        }
+
+        /* BOOKING FORM */
+        .booking-section {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: 40px 20px;
+            border: 1px solid var(--border-glass);
+            position: relative;
+            overflow: hidden;
+        }
+        @media (min-width: 768px) {
+            .booking-section {
+                padding: 50px 40px;
+            }
+        }
+        .booking-section::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: var(--accent-1);
+            filter: blur(90px);
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+        }
+        @media (min-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .form-grid .full-width {
+                grid-column: 1 / -1;
+            }
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.02em;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 13px 16px;
+            border-radius: var(--radius-md);
+            border: 1.5px solid var(--border-glass);
+            background: var(--bg-glass);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-family: var(--font-main);
+            transition: var(--transition-fast);
+            outline: none;
+            width: 100%;
+            resize: vertical;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent-2);
+            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.08);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .form-group input.error,
+        .form-group select.error,
+        .form-group textarea.error {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.06);
+        }
+        .form-group .error-msg {
+            font-size: 0.7rem;
+            color: #ef4444;
+            min-height: 16px;
+            letter-spacing: 0.02em;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            font-size: 1rem;
+            margin-top: 8px;
+            cursor: pointer;
+            background: var(--gradient-btn);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 22px rgba(108, 92, 231, 0.4);
+            font-family: var(--font-main);
+        }
+        .btn-submit:hover {
+            box-shadow: var(--glow-strong);
+            transform: translateY(-2px);
+        }
+        .btn-submit:active {
+            transform: scale(0.97);
+        }
+
+        /* AGENTS SECTION */
+        .agents-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+        @media (min-width: 500px) {
+            .agents-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (min-width: 900px) {
+            .agents-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        .agent-card {
+            padding: 22px 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            cursor: default;
+        }
+        .agent-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            position: relative;
+        }
+        .agent-avatar.av-tech {
+            background: linear-gradient(135deg, #1e3a5f, #2563eb);
+        }
+        .agent-avatar.av-brand {
+            background: linear-gradient(135deg, #3b1f5e, #8b5cf6);
+        }
+        .agent-avatar.av-creator {
+            background: linear-gradient(135deg, #5f1f3a, #ec4899);
+        }
+        .agent-avatar.av-campaign {
+            background: linear-gradient(135deg, #1f4a3a, #10b981);
+        }
+        .agent-avatar.av-care {
+            background: linear-gradient(135deg, #4a3a1f, #f59e0b);
+        }
+        .status-dot {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            border: 2px solid var(--bg-primary);
+            background: #10b981;
+        }
+        .status-dot.offline {
+            background: #6b7280;
+        }
+        .agent-info h4 {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+        .agent-info .role {
+            font-size: 0.72rem;
+            color: var(--accent-2);
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+        }
+        .agent-info p {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+        .agent-call-btn {
+            margin-top: 8px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: 1.5px solid var(--accent-2);
+            background: transparent;
+            color: var(--accent-2);
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-family: var(--font-main);
+            letter-spacing: 0.02em;
+        }
+        .agent-call-btn:hover {
+            background: var(--accent-2);
+            color: #fff;
+            box-shadow: var(--glow-purple);
+        }
+
+        /* TESTIMONIALS */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+        @media (min-width: 600px) {
+            .testimonials-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (min-width: 900px) {
+            .testimonials-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+        .testimonial-card {
+            padding: 22px 18px;
+        }
+        .testimonial-card:hover {
+            box-shadow: 0 0 40px rgba(108, 92, 231, 0.2);
+            border-color: var(--border-glow);
+        }
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .testimonial-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+        }
+        .ta-1 {
+            background: linear-gradient(135deg, #6c5ce7, #a855f7);
+        }
+        .ta-2 {
+            background: linear-gradient(135deg, #2563eb, #6366f1);
+        }
+        .ta-3 {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+        }
+        .testimonial-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .testimonial-role {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        .testimonial-stars {
+            color: #f59e0b;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+        }
+        .testimonial-text {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        /* FAQ */
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .faq-question {
+            width: 100%;
+            padding: 16px 20px;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+            font-family: var(--font-main);
+            letter-spacing: 0.01em;
+        }
+        .faq-icon {
+            font-size: 1.3rem;
+            transition: transform var(--transition-smooth);
+            flex-shrink: 0;
+            color: var(--accent-2);
+        }
+        .faq-item.open .faq-icon {
+            transform: rotate(45deg);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0 20px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+        .faq-item.open .faq-answer {
+            max-height: 200px;
+            padding: 0 20px 16px;
+        }
+        .faq-item.open {
+            border-color: var(--border-glow);
+            box-shadow: 0 0 20px rgba(108, 92, 231, 0.08);
+        }
+
+        /* SUCCESS MODAL */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-smooth);
+            pointer-events: none;
+            padding: 20px;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+        }
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-xl);
+            padding: 32px 24px;
+            text-align: center;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: var(--shadow-elevated);
+            position: relative;
+            animation: modal-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes modal-pop {
+            from {
+                transform: scale(0.85);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .modal-check {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #059669);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 2rem;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+        }
+        .modal-booking-id {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px dashed var(--border-glass);
+            border-radius: var(--radius-sm);
+            padding: 10px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-2);
+            letter-spacing: 0.04em;
+            margin: 12px 0;
+            display: inline-block;
+        }
+        .modal-close {
+            margin-top: 16px;
+            padding: 12px 28px;
+            background: var(--gradient-btn);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font-main);
+            letter-spacing: 0.02em;
+            transition: var(--transition-smooth);
+        }
+        .modal-close:hover {
+            box-shadow: var(--glow-strong);
+        }
+
+        /* FOOTER */
+        .footer {
+            border-top: 1px solid var(--border-glass);
+            padding: 40px 20px 24px;
+            position: relative;
+            z-index: 1;
+            background: var(--bg-deep);
+        }
+        .footer-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+        }
+        @media (min-width: 600px) {
+            .footer-inner {
+                grid-template-columns: 2fr 1fr 1fr 1fr;
+                gap: 32px;
+            }
+        }
+        .footer-col h4 {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+        .footer-col a,
+        .footer-col p {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 6px;
+            transition: var(--transition-fast);
+            line-height: 1.6;
+        }
+        .footer-col a:hover {
+            color: var(--accent-2);
+        }
+        .footer-social {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .footer-social a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+        }
+        .footer-social a:hover {
+            border-color: var(--accent-2);
+            box-shadow: var(--glow-purple);
+            background: rgba(168, 85, 247, 0.1);
+        }
+        .footer-bottom {
+            max-width: var(--max-width);
+            margin: 24px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-glass);
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* SCROLL REVEAL */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 767px) {
+            .nav-links {
+                display: none;
+            }
+            .nav-cta {
+                display: none;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .btn {
+                padding: 12px 22px;
+                font-size: 0.82rem;
+            }
+            .section {
+                padding: 50px 16px;
+            }
+            .booking-section {
+                padding: 28px 14px;
+            }
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            .feature-card {
+                padding: 16px 12px;
+            }
+            .feature-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            .feature-card h4 {
+                font-size: 0.82rem;
+            }
+            .feature-card p {
+                font-size: 0.7rem;
+            }
+            .agent-card {
+                padding: 16px 12px;
+            }
+            .agent-avatar {
+                width: 42px;
+                height: 42px;
+                font-size: 1.2rem;
+            }
+            .agent-info h4 {
+                font-size: 0.82rem;
+            }
+            .modal-content {
+                padding: 24px 16px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .hero h1 {
+                font-size: 3.2rem;
+            }
+            .section-title {
+                font-size: 2.2rem;
+            }
+            .hero .typing-wrapper {
+                font-size: 1.2rem;
+            }
+            .section {
+                padding: 80px 24px;
+            }
+        }
+        @media (min-width: 1024px) {
+            .hero h1 {
+                font-size: 3.8rem;
+            }
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- LOADING SCREEN -->
+    <div id="loading-screen">
+        <div class="loader-ring"></div>
+        <div class="loader-text">Loading Viralbond...</div>
+    </div>
+
+    <!-- FLOATING PARTICLES -->
+    <div id="particles-container"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
+            <a href="#" class="nav-logo">
+                <div class="nav-logo-icon">📞</div>
+                <span>Viralbond Media</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="https://viralbondmedia.netlify.app/" data-nav>VBM Home</a></li>
+                <li><a href="#features" data-nav>Features</a></li>
+                <li><a href="#how-it-works" data-nav>How It Works</a></li>
+                <li><a href="#booking" data-nav>Book Call</a></li>
+                <li><a href="#agents" data-nav>Team</a></li>
+                <li><a href="#faq" data-nav>FAQ</a></li>
+            </ul>
+            <button class="nav-cta" onclick="scrollToSection('booking')">Book Appointment</button>
+            <button class="hamburger" id="hamburger" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="https://viralbondmedia.netlify.app/" data-mobile-nav>VBM Home</a>
+        <a href="#features" data-mobile-nav>Features</a>
+        <a href="#how-it-works" data-mobile-nav>How It Works</a>
+        <a href="#booking" data-mobile-nav>Book Call</a>
+        <a href="#agents" data-mobile-nav>Team</a>
+        <a href="#testimonials" data-mobile-nav>Testimonials</a>
+        <a href="#faq" data-mobile-nav>FAQ</a>
+        <button class="mobile-cta" onclick="scrollToSection('booking');closeMobileMenu();">Book Appointment</button>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero">
+        <div class="hero-bg-orb orb-1"></div>
+        <div class="hero-bg-orb orb-2"></div>
+        <div class="hero-bg-orb orb-3"></div>
+        <div class="hero-floating-badge badge-left">⭐ 4.9/5 Rated Support</div>
+        <div class="hero-floating-badge badge-right">🔥 24/7 Available</div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="dot"></span> 24/7 Premium Support
+            </div>
+            <h1>
+                Viralbond Media<br><span class="text-gradient">Call Support</span>
+            </h1>
+            <div class="typing-wrapper">
+                <span id="typingText"></span><span class="typing-cursor"></span>
+            </div>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="scrollToSection('booking')">📅 Book Appointment</button>
+                <button class="btn btn-outline" onclick="scrollToSection('features')">🔍 Explore Features</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section class="section reveal" id="features">
+        <span class="section-label">Features</span>
+        <h2 class="section-title">Why Choose <span class="text-gradient">Viralbond?</span></h2>
+        <p class="section-subtitle">Premium support designed for businesses, creators, and enterprises who need reliable assistance—anytime, anywhere.</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🕐</div>
+                <h4>24/7 Agent Support</h4>
+                <p>Round-the-clock availability with real human experts.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h4>Instant Response</h4>
+                <p>Lightning-fast response times with smart routing.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h4>Specialized Team</h4>
+                <p>Dedicated experts for tech, brand, creator & campaign support.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📅</div>
+                <h4>Smart Booking</h4>
+                <p>Intelligent scheduling that fits your calendar perfectly.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💼</div>
+                <h4>Business Support</h4>
+                <p>Dedicated support for enterprises and growing businesses.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎬</div>
+                <h4>Creator Support</h4>
+                <p>Tailored assistance for content creators and influencers.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <h4>Tech Assistance</h4>
+                <p>Expert technical troubleshooting and guidance.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS SECTION -->
+    <section class="section reveal" id="how-it-works">
+        <span class="section-label">Process</span>
+        <h2 class="section-title">How It <span class="text-gradient">Works</span></h2>
+        <p class="section-subtitle">Getting support is incredibly simple. Just four easy steps to connect with our expert agents.</p>
+        <div class="steps-container">
+            <div class="step-card glass-card" style="position:relative;">
+                <div class="step-number">1</div>
+                <h4>Book Appointment</h4>
+                <p>Fill out the quick booking form with your details and preferred time.</p>
+                <div class="step-connector"></div>
+            </div>
+            <div class="step-card glass-card" style="position:relative;">
+                <div class="step-number">2</div>
+                <h4>Select Category</h4>
+                <p>Choose your issue category so we route you to the right specialist.</p>
+                <div class="step-connector"></div>
+            </div>
+            <div class="step-card glass-card" style="position:relative;">
+                <div class="step-number">3</div>
+                <h4>Our Agent Calls You</h4>
+                <p>Your assigned support agent reaches out at your scheduled time.</p>
+                <div class="step-connector"></div>
+            </div>
+            <div class="step-card glass-card">
+                <div class="step-number">4</div>
+                <h4>Get Support Instantly</h4>
+                <p>Resolve your issues quickly with expert guidance and solutions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOOKING FORM SECTION -->
+    <section class="section reveal" id="booking">
+        <span class="section-label">Book a Call</span>
+        <h2 class="section-title">Schedule Your <span class="text-gradient">Support Call</span></h2>
+        <p class="section-subtitle">Fill in your details below and our agent will reach out at your preferred time.</p>
+        <div class="booking-section glass-card">
+            <form id="bookingForm" novalidate>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" placeholder="John Doe" required autocomplete="name">
+                        <span class="error-msg" id="nameError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" placeholder="+1 (555) 123-4567" required autocomplete="tel">
+                        <span class="error-msg" id="phoneError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Issue Category *</label>
+                        <select id="category" required>
+                            <option value="">-- Select Category --</option>
+                            <option value="Technical Support">Technical Support</option>
+                            <option value="Brand Outreach">Brand Outreach</option>
+                            <option value="Creator Support">Creator Support</option>
+                            <option value="Campaign Management">Campaign Management</option>
+                            <option value="Customer Care">Customer Care</option>
+                            <option value="Business Support">Business Support</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span class="error-msg" id="categoryError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="preferredDate">Preferred Date *</label>
+                        <input type="date" id="preferredDate" required>
+                        <span class="error-msg" id="dateError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="preferredTime">Preferred Time *</label>
+                        <select id="preferredTime" required>
+                            <option value="">-- Select Time --</option>
+                            <option value="10:00 AM">10:00 AM</option>
+                            <option value="12:00 PM">12:00 PM</option>
+                            <option value="02:00 PM">02:00 PM</option>
+                            <option value="04:00 PM">04:00 PM</option>
+                            <option value="05:00 PM">05:00 PM</option>
+                        </select>
+                        <span class="error-msg" id="timeError"></span>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="message">Message *</label>
+                        <textarea id="message" placeholder="Briefly describe your issue..." rows="3" required></textarea>
+                        <span class="error-msg" id="messageError"></span>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">🚀 Book My Support Call</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- AGENTS SECTION (now "Meet Our Team") -->
+    <section class="section reveal" id="agents">
+        <span class="section-label">Our Team</span>
+        <h2 class="section-title">Meet Our <span class="text-gradient">Support Experts</span></h2>
+        <p class="section-subtitle">Specialized professionals ready to handle any challenge you throw their way.</p>
+        <div class="agents-grid">
+            <div class="agent-card glass-card">
+                <div class="agent-avatar av-tech">🔧<span class="status-dot"></span></div>
+                <div class="agent-info">
+                    <span class="role">Technical Support</span>
+                    <h4>Alex Turing</h4>
+                    <p>Expert in troubleshooting, debugging, and technical infrastructure.</p>
+                    <button class="agent-call-btn">📞 Request Call</button>
+                </div>
+            </div>
+            <div class="agent-card glass-card">
+                <div class="agent-avatar av-brand">📢<span class="status-dot"></span></div>
+                <div class="agent-info">
+                    <span class="role">Brand Outreach</span>
+                    <h4>Maya Chen</h4>
+                    <p>Specialist in brand strategy, partnerships, and media outreach.</p>
+                    <button class="agent-call-btn">📞 Request Call</button>
+                </div>
+            </div>
+            <div class="agent-card glass-card">
+                <div class="agent-avatar av-creator">🎬<span class="status-dot"></span></div>
+                <div class="agent-info">
+                    <span class="role">Creator Support</span>
+                    <h4>Rio Nakamura</h4>
+                    <p>Dedicated to helping content creators grow and monetize effectively.</p>
+                    <button class="agent-call-btn">📞 Request Call</button>
+                </div>
+            </div>
+            <div class="agent-card glass-card">
+                <div class="agent-avatar av-campaign">📊<span class="status-dot offline"></span></div>
+                <div class="agent-info">
+                    <span class="role">Campaign Manager</span>
+                    <h4>Sarah Okafor</h4>
+                    <p>Campaign optimization, analytics, and performance marketing pro.</p>
+                    <button class="agent-call-btn">📞 Request Call</button>
+                </div>
+            </div>
+            <div class="agent-card glass-card">
+                <div class="agent-avatar av-care">💜<span class="status-dot"></span></div>
+                <div class="agent-info">
+                    <span class="role">Customer Care</span>
+                    <h4>David Park</h4>
+                    <p>Friendly, empathetic support for all your customer service needs.</p>
+                    <button class="agent-call-btn">📞 Request Call</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section class="section reveal" id="testimonials">
+        <span class="section-label">Testimonials</span>
+        <h2 class="section-title">Loved by <span class="text-gradient">Clients</span></h2>
+        <p class="section-subtitle">Hear what our clients say about their experience with Viralbond Media.</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card glass-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar ta-1">JD</div>
+                    <div>
+                        <div class="testimonial-name">James Delgado</div>
+                        <div class="testimonial-role">Tech Startup Founder</div>
+                    </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Viralbond's support saved us hours of debugging. The instant response is unreal. Highly recommended!"</p>
+            </div>
+            <div class="testimonial-card glass-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar ta-2">LP</div>
+                    <div>
+                        <div class="testimonial-name">Lena Park</div>
+                        <div class="testimonial-role">Content Creator</div>
+                    </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"As a full-time creator, having 24/7 support is a game changer. The booking process is super smooth."</p>
+            </div>
+            <div class="testimonial-card glass-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar ta-3">RK</div>
+                    <div>
+                        <div class="testimonial-name">Raj Krishnan</div>
+                        <div class="testimonial-role">E-commerce CEO</div>
+                    </div>
+                </div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"The specialized team is brilliant. Each expert knows exactly how to handle our unique business needs."</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="section reveal" id="faq">
+        <span class="section-label">FAQ</span>
+        <h2 class="section-title">Frequently <span class="text-gradient">Asked Questions</span></h2>
+        <p class="section-subtitle">Quick answers to common questions about our call support service.</p>
+        <div class="faq-list">
+            <div class="faq-item">
+                <button class="faq-question">What is Viralbond Media Call Support? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">Viralbond Media Call Support is a premium human‑powered support system that connects you with specialized agents for technical, brand, creator, and business support—available 24/7.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">How quickly will I get a response? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">Our average response time is under 2 minutes during business hours, and under 10 minutes for overnight inquiries. We prioritize urgent issues automatically.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">Is the booking really free? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">Yes! Booking a support call is completely free. You only pay if you opt for premium dedicated agent plans. Standard support is always complimentary.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">Can I reschedule my appointment? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">Absolutely. You can reschedule anytime by contacting us with your booking ID. We'll find a new slot that works for you.</div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">What categories of support do you offer? <span class="faq-icon">+</span></button>
+                <div class="faq-answer">We cover Technical Support, Brand Outreach, Creator Support, Campaign Management, Customer Care, and general Business Support—with more categories being added regularly.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="footer">
+        <div class="footer-inner">
+            <div class="footer-col">
+                <h4>Viralbond Media</h4>
+                <p>Premium call support for businesses, creators, and enterprises. Talk with expert agents anytime, anywhere.</p>
+                <div class="footer-social">
+                    <a href="https://www.linkedin.com/in/rohti-choudhary-6107053ba" aria-label="LinkedIn">💼</a>
+                    <a href="https://www.instagram.com/viralbondmedia/" aria-label="Instagram">📷</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <a href="https://viralbondmedia.netlify.app/">VBM Home</a>
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#booking">Book Call</a>
+                <a href="#agents">Team</a>
+                <a href="#faq">FAQ</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p>📧vbmcustomercare@gmail.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Viralbond Media. All rights reserved. | Influencer Marketing Agency
+        </div>
+    </footer>
+
+    <!-- SUCCESS MODAL -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content">
+            <div class="modal-check">✓</div>
+            <h3 style="margin-bottom:6px;">Booking Confirmed!</h3>
+            <p style="color:var(--text-muted);font-size:0.85rem;">Your support call has been scheduled successfully.</p>
+            <div class="modal-booking-id" id="modalBookingId">VB-20260529-XXXXX</div>
+            <p style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Save this ID for reference</p>
+            <p style="font-size:0.78rem;color:var(--accent-2);margin-top:6px;" id="modalDetails"></p>
+            <button class="modal-close" onclick="closeModal()">Got It, Thanks! 🎉</button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // LOADING SCREEN
+            const loadingScreen = document.getElementById('loading-screen');
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    loadingScreen.classList.add('hidden');
+                }, 800);
+            });
+            if (document.readyState === 'complete') {
+                setTimeout(() => {
+                    loadingScreen.classList.add('hidden');
+                }, 400);
+            }
+
+            // FLOATING PARTICLES
+            const particlesContainer = document.getElementById('particles-container');
+            for (let i = 0; i < 28; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                const size = Math.random() * 50 + 15;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.setProperty('--dur', (Math.random() * 14 + 8) + 's');
+                particle.style.setProperty('--delay', (Math.random() * -12) + 's');
+                particle.style.opacity = (Math.random() * 0.08 + 0.04);
+                particle.style.background = ['#6c5ce7', '#a855f7', '#6366f1', '#8b5cf6'][Math.floor(Math.random() * 4)];
+                particlesContainer.appendChild(particle);
+            }
+
+            // NAVBAR SCROLL
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+                updateActiveNavLink();
+            }, { passive: true });
+
+            function updateActiveNavLink() {
+                const sections = document.querySelectorAll('section[id]');
+                const navLinksAll = document.querySelectorAll('[data-nav]');
+                let current = '';
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= 120 && rect.bottom >= 120) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                navLinksAll.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            // MOBILE MENU
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const mobileNavLinks = document.querySelectorAll('[data-mobile-nav]');
+
+            function openMobileMenu() {
+                mobileMenu.classList.add('open');
+                hamburger.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            function closeMobileMenu() {
+                mobileMenu.classList.remove('open');
+                hamburger.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            hamburger.addEventListener('click', () => {
+                if (mobileMenu.classList.contains('open')) {
+                    closeMobileMenu();
+                } else {
+                    openMobileMenu();
+                }
+            });
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', closeMobileMenu);
+            });
+            mobileMenu.addEventListener('click', (e) => {
+                if (e.target === mobileMenu) closeMobileMenu();
+            });
+
+            // SMOOTH SCROLL
+            window.scrollToSection = function(sectionId) {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    const navHeight = navbar.offsetHeight + 20;
+                    const target = section.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                    window.scrollTo({ top: target, behavior: 'smooth' });
+                }
+            };
+
+            // TYPING TEXT
+            const typingTextEl = document.getElementById('typingText');
+            const phrases = [
+                'Talk With Support Agents Anytime',
+                'Get Instant Expert Assistance 24/7',
+                'Smart Booking for Smart People',
+                'Your Dedicated Support Team Awaits',
+                'Resolve Issues in Minutes, Not Hours'
+            ];
+            let phraseIndex = 0, charIndex = 0, isDeleting = false, typingSpeed = 70;
+            function typeLoop() {
+                const current = phrases[phraseIndex];
+                if (isDeleting) {
+                    typingTextEl.textContent = current.substring(0, charIndex - 1);
+                    charIndex--;
+                    typingSpeed = 35;
+                } else {
+                    typingTextEl.textContent = current.substring(0, charIndex + 1);
+                    charIndex++;
+                    typingSpeed = 65;
+                }
+                if (!isDeleting && charIndex === current.length) {
+                    typingSpeed = 2000;
+                    isDeleting = true;
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    phraseIndex = (phraseIndex + 1) % phrases.length;
+                    typingSpeed = 300;
+                }
+                setTimeout(typeLoop, typingSpeed);
+            }
+            setTimeout(typeLoop, 600);
+
+            // SCROLL REVEAL
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // FAQ ACCORDION
+            document.querySelectorAll('.faq-item').forEach(item => {
+                const btn = item.querySelector('.faq-question');
+                btn.addEventListener('click', () => {
+                    const wasOpen = item.classList.contains('open');
+                    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+                    if (!wasOpen) item.classList.add('open');
+                });
+            });
+
+            // BOOKING FORM
+            const bookingForm = document.getElementById('bookingForm');
+            const successModal = document.getElementById('successModal');
+            const modalBookingId = document.getElementById('modalBookingId');
+            const modalDetails = document.getElementById('modalDetails');
+            const dateInput = document.getElementById('preferredDate');
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.setAttribute('min', today);
+
+            function generateBookingID() {
+                const now = new Date();
+                const dateStr = now.toISOString().split('T')[0].replace(/-/g, '');
+                const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+                let rand = '';
+                for (let i = 0; i < 5; i++) rand += chars.charAt(Math.floor(Math.random() * chars.length));
+                return 'VB-' + dateStr + '-' + rand;
+            }
+
+            function validateForm(data) {
+                let isValid = true;
+                const errors = { name: '', phone: '', category: '', date: '', time: '', message: '' };
+                if (!data.fullName || data.fullName.trim().length < 2) {
+                    errors.name = 'Please enter your full name.';
+                    isValid = false;
+                }
+                if (!data.phone || !/^[\+\d\s\-\(\)]{7,20}$/.test(data.phone.trim())) {
+                    errors.phone = 'Please enter a valid phone number.';
+                    isValid = false;
+                }
+                if (!data.category) {
+                    errors.category = 'Please select a category.';
+                    isValid = false;
+                }
+                if (!data.preferredDate) {
+                    errors.date = 'Please select a date.';
+                    isValid = false;
+                } else if (new Date(data.preferredDate) < new Date(today)) {
+                    errors.date = 'Please select a date from today onward.';
+                    isValid = false;
+                }
+                if (!data.preferredTime) {
+                    errors.time = 'Please select a time.';
+                    isValid = false;
+                }
+                // NEW: Message is now required
+                if (!data.message || data.message.trim().length === 0) {
+                    errors.message = 'Please provide a message describing your issue.';
+                    isValid = false;
+                }
+                return { isValid, errors };
+            }
+
+            function displayErrors(errors) {
+                document.getElementById('nameError').textContent = errors.name || '';
+                document.getElementById('phoneError').textContent = errors.phone || '';
+                document.getElementById('categoryError').textContent = errors.category || '';
+                document.getElementById('dateError').textContent = errors.date || '';
+                document.getElementById('timeError').textContent = errors.time || '';
+                document.getElementById('messageError').textContent = errors.message || '';
+                ['fullName', 'phone', 'category', 'preferredDate', 'preferredTime', 'message'].forEach(id => {
+                    const input = document.getElementById(id);
+                    const errorKey = id === 'fullName' ? 'name' : (id === 'preferredDate' ? 'date' : (id ===
+                        'preferredTime' ? 'time' : id));
+                    if (input) {
+                        if (errors[errorKey] && errors[errorKey].length > 0) {
+                            input.classList.add('error');
+                        } else {
+                            input.classList.remove('error');
+                        }
+                    }
+                });
+            }
+
+            function saveToLocalStorage(bookingData) {
+                const bookings = JSON.parse(localStorage.getItem('viralbond_bookings') || '[]');
+                bookings.push({ ...bookingData, timestamp: new Date().toISOString() });
+                localStorage.setItem('viralbond_bookings', JSON.stringify(bookings));
+                console.log('📋 Booking saved to localStorage.');
+            }
+
+            // === GOOGLE SHEETS INTEGRATION ===
+            const GOOGLE_SHEETS_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycby1TxcpFa9lU3uSTIWdlE1a8I1tV7DuFjK0Mxx3RhTcpvQoIbvSCKkHydcx0GGwMuo/exec'; // <-- PASTE YOUR WEB APP URL HERE
+            function sendToGoogleSheets(bookingData) {
+                if (!GOOGLE_SHEETS_WEBHOOK_URL) {
+                    console.log('ℹ️ Google Sheets URL not set. Data saved locally.');
+                    return;
+                }
+                fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bookingData)
+                }).then(() => console.log('✅ Sent to Google Sheets.')).catch(err => console.warn('⚠️ Sheets error:', err));
+            }
+
+            bookingForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = {
+                    fullName: document.getElementById('fullName').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    category: document.getElementById('category').value,
+                    preferredDate: document.getElementById('preferredDate').value,
+                    preferredTime: document.getElementById('preferredTime').value,
+                    message: document.getElementById('message').value.trim()
+                };
+                const { isValid, errors } = validateForm(formData);
+                displayErrors(errors);
+                if (!isValid) {
+                    const firstError = document.querySelector('input.error, select.error, textarea.error');
+                    if (firstError) firstError.focus();
+                    return;
+                }
+                displayErrors({ name: '', phone: '', category: '', date: '', time: '', message: '' });
+                const bookingID = generateBookingID();
+                const bookingData = { ...formData, bookingID };
+                saveToLocalStorage(bookingData);
+                sendToGoogleSheets(bookingData);
+                modalBookingId.textContent = bookingID;
+                modalDetails.textContent = `Category: ${formData.category} | ${formData.preferredDate} at ${formData.preferredTime}`;
+                successModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                bookingForm.reset();
+            });
+
+            window.closeModal = function() {
+                successModal.classList.remove('show');
+                document.body.style.overflow = '';
+            };
+            successModal.addEventListener('click', (e) => { if (e.target === successModal) closeModal(); });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && successModal.classList.contains('show')) closeModal();
+                if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMobileMenu();
+            });
+
+            // AGENT CALL BUTTONS
+            document.querySelectorAll('.agent-call-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const agentCard = this.closest('.agent-card');
+                    const agentName = agentCard.querySelector('h4').textContent;
+                    const agentRole = agentCard.querySelector('.role').textContent;
+                    document.getElementById('category').value = agentRole;
+                    document.getElementById('message').value = `Hi, I'd like to connect with ${agentName} (${agentRole}).`;
+                    scrollToSection('booking');
+                });
+            });
+
+            updateActiveNavLink();
+            console.log('✅ Viralbond Media ready – no AI mentions, fully human-powered.');
+        })();
+    </script>
+</body>
+</html>
